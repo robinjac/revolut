@@ -1,5 +1,27 @@
-import tickers from "./tickers.json";
+import tickers from "./tickers.json"
 import headers from "./headers.json";
+
+
+interface TickerResult {
+  type: string;
+  instrument: string;
+  ref: string;
+  last: number;
+  lastPrecise: string;
+  previous: number;
+  previousPrecise: string;
+  previousClose: number;
+  previousClosePrecise: string;
+  lastClose: number;
+  lastClosePrecise: string;
+  currency: string;
+  highlyVolatile: boolean;
+  status: string;
+  tradingSession: string;
+  nextOpenUtcTimestamp: number;
+  updatedAt: number;
+  tickerType: string;
+}
 
 const url = "https://trade.revolut.com/api/retail/instruments/tickers";
 
@@ -9,6 +31,10 @@ const res = await fetch(url, {
   body: JSON.stringify(tickers),
 });
 
-const result = await res.json();
+const result: TickerResult[] = await res.json();
 
-console.log(result.length, result[result.length - 1]);
+const selection = result
+  .sort(({ last, previous }) => last - previous)
+  .slice(0, 10);
+
+console.log(selection);

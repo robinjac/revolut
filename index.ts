@@ -37,4 +37,9 @@ const selection = result
   .sort(({ last, previous }) => last - previous)
   .slice(0, 10);
 
-console.log(selection);
+
+const openingTimeUTC = Math.min(...selection.map(({nextOpenUtcTimestamp}) => nextOpenUtcTimestamp))
+
+const date = new Date(openingTimeUTC * 1000);
+
+console.log(date.toLocaleString())
